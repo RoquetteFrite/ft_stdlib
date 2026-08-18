@@ -16,6 +16,7 @@ void	print_list_int(t_list *list)
 	{
 		print_elem_int(cursor);
 		printf(", ");
+		cursor = cursor->next;
 	}
 }
 
