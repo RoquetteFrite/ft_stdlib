@@ -10,6 +10,7 @@ t_list  *ft_push_back(t_list *list, void *data)
 	if (new_elem == NULL)
 		return (NULL);
 	new_elem->next = NULL;
+	new_elem->data = data;
 	cursor = list;
 	while (cursor != NULL)
 		cursor = cursor->next;
