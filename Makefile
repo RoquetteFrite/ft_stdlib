@@ -2,6 +2,7 @@ m	?=	"Add new feature"
 
 all:
 	make -C ft_linked_list
+	gcc main.c ft_linked_list/ft_linked_list.a
 
 clean:
 	make -C ft_linked_list clean
