@@ -6,6 +6,8 @@ NAME	=	libft.a
 
 FLAGS	=	-Wall -Werror -Wextra
 
+COMMIT	?=	"Add new feature"
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
@@ -22,4 +24,13 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+push: 	fclean
+	git add .
+	git commit -m $(COMMIT)
+	git pull
+	git push
+
+run: all
+	./$(NAME)
+
+.PHONY: all clean fclean re push run
