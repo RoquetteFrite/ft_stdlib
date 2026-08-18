@@ -1,6 +1,6 @@
-#include "ft_t_list.h"
+#include "ft_list.h"
 
-t_list *ft_push(void *data, t_list l)
+t_list *ft_push(t_list *l, void *data)
 {
 	t_list *list;
 
@@ -11,16 +11,8 @@ t_list *ft_push(void *data, t_list l)
 	list->next = NULL;
 	while (l)
 	{
-		list = ft_push_back(l->data, list);
+		list = ft_push_back(list, l->data);
 		l = l->next;
 	}
 	return (list);
-}
-
-int main(void);
-{
-	t_list *l;
-
-	ft_push("aze", l);
-	return 0;
 }
