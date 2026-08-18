@@ -1,36 +1,21 @@
-SRC	=	main.c
+m	?=	"Add new feature"
 
-OBJ	=	${SRC:.c=.o}
-
-NAME	=	libft.a
-
-FLAGS	=	-Wall -Werror -Wextra
-
-COMMIT	?=	"Add new feature"
-
-all: $(NAME)
-
-$(NAME): $(OBJ)
-	gcc $(OBJ) -o $(NAME)
-
-%.o: %.c
-	gcc $(FLAGS) -c $< -o $@
+all:
+	make -C ft_linked_list
 
 clean:
-	rm -f *.o
+	make -C ft_linked_list clean
 
-fclean: clean
-	rm -f $(NAME)
+fclean:
+	make -C ft_linked_list fclean
 
-re: fclean all
+re:
+	make -C ft_linked_list re
 
 push: 	fclean
 	git add .
-	git commit -m $(COMMIT)
+	git commit -m $(m)
 	git pull
 	git push
 
-run: all
-	./$(NAME)
-
-.PHONY: all clean fclean re push run
+.PHONY: all clean fclean re push
