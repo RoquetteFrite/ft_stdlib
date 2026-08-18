@@ -7,6 +7,18 @@ void	print_elem_int(t_list *elem)
 	printf("%d", *(int*)elem->data);
 }
 
+void	print_list_int(t_list *list)
+{
+	t_list	*cursor;
+
+	cursor = list;
+	while (cursor != NULL)
+	{
+		print_elem_int(cursor);
+		printf(", ");
+	}
+}
+
 void	test_list()
 {
 	t_list	*list;
@@ -17,8 +29,8 @@ void	test_list()
 		return (-1);
 	data = 10;
 	list->data = &data;
-	list->next = NULL; 
-	
+	list->next = NULL;
+	print_list_int(list);
 }
 
 int	main(void)
