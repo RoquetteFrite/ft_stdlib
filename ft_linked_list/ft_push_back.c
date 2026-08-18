@@ -2,5 +2,16 @@
 
 t_list  *ft_push_back(t_list *list, void *data)
 {
-
+	t_list	*cursor;
+	t_list	*new_elem;
+    
+	new_elem = malloc(sizeof(t_list));
+	if (new_elem == NULL)
+		return (NULL);
+	cursor = list;
+	while (cursor != NULL)
+	{
+		
+	}
+	return (list);
 }
