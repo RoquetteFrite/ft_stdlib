@@ -76,10 +76,15 @@ int ft_printf(const char *format, ...)
 	return i;
 }
 
+#include <stdlib.h>
 int main(void)
 {
 	ft_printf("test: %d %s fin\n", 42, "ft_test");
 	//ft_printf("test %%str%% %s", "tessssst");
 	//ft_printf("%s%s", "first", " second");
+
+    int *ptr = NULL;
+    ptr = malloc(sizeof(int));
+    printf("ptr pointer: %p\n", ptr);
 	return 0;
 }
