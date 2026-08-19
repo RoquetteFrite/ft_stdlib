@@ -21,9 +21,9 @@ re:
 	make -C ft_printf re
 
 push: 	fclean
+	git pull
 	git add .
 	git commit -m $(m)
-	git pull
 	git push
 
 .PHONY: all clean fclean re push
