@@ -75,3 +75,48 @@ int ft_printf(const char *format, ...)
 	}
 	return i;
 }
+<<<<<<< HEAD
+=======
+
+int pos_in_hex(int character)
+{
+    const char hex_table[17] = "0123456789abcdef";
+    int i;
+
+    i = 0;
+    if (character >= 16)
+        return (-1);
+    else
+    {
+        while (hex_table[i])
+        {
+            if (character == hex_table[i])
+                return (i);
+            i++;
+        }
+    }
+    return (-1);
+}
+
+void print_int_to_hex(size_t nbr)
+{
+    const char hex_table[17] = "0123456789abcdef";
+}
+
+#include <stdlib.h>
+int main(void)
+{
+	ft_printf("test: %d %s fin\n", 42, "ft_test");
+	//ft_printf("test %%str%% %s", "tessssst");
+	//ft_printf("%s%s", "first", " second");
+
+    int *ptr = NULL;
+    size_t ptr_value;
+
+    ptr = malloc(sizeof(int));
+    ptr_value = (long int)ptr;
+    printf("ptr pointer: %p\n", ptr);
+    printf("%ld\n", ptr_value);
+    return 0;
+}
+>>>>>>> 4d8a707817b01a2b5aece2900d303a36b82a0ecb
