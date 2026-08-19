@@ -27,7 +27,7 @@ void	test_list()
 
 	list = malloc(sizeof(t_list));
 	if (list == NULL)
-		return (-1);
+		return ;
 	data = 10;
 	list->data = &data;
 	list->next = NULL;

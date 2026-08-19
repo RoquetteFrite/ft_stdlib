@@ -10,7 +10,7 @@ CFLAGS	=	-Wall -Werror -Wextra
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	gcc $(OBJ) -o $(NAME)
+	ar rcs $(NAME) $(OBJ)
 
 %.o: %.c
 	gcc $(CFLAGS) -c $< -o $@
