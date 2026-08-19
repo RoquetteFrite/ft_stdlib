@@ -2,16 +2,23 @@ m	?=	"Add new feature"
 
 all:
 	make -C ft_linked_list
-	gcc main.c ft_linked_list/ft_linked_list.a
+	make -C ft_printf
+	gcc main.c \
+		ft_linked_list/ft_linked_list.a\
+		ft_printf/ft_printf.a
 
 clean:
 	make -C ft_linked_list clean
+	make -C ft_printf clean
 
 fclean:
 	make -C ft_linked_list fclean
+	make -C ft_printf fclean
 
 re:
 	make -C ft_linked_list re
+	make -C ft_printf re
+	rm -f a.out
 
 push: 	fclean
 	git add .

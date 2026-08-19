@@ -1,10 +1,10 @@
 #include "ft_linked_list/ft_list.h"
-
+#include "ft_printf/ft_printf.h"
 #include <stdio.h>
 
 void	print_elem_int(t_list *elem)
 {
-	printf("%d", *(int*)elem->data);
+	ft_printf("%d", *(int*)elem->data);
 }
 
 void	print_list_int(t_list *list)
@@ -15,7 +15,7 @@ void	print_list_int(t_list *list)
 	while (cursor != NULL)
 	{
 		print_elem_int(cursor);
-		printf(", ");
+		ft_printf(", ");
 		cursor = cursor->next;
 	}
 }
@@ -37,6 +37,6 @@ void	test_list()
 int	main(void)
 {
 	test_list();
-	printf("test");
+	ft_printf("test");
 	return 0;
 }
