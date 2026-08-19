@@ -10,6 +10,11 @@ int ft_printf(const char *format, ...)
 	while (format[i])
 	{
 		if (format[i] == '%')
+		{
+			if (format[i + 1] && formqt[i + 1] == 'd')
+				print_int(args);
+		 if (format[i + 1] && formqt[i + 1] == 's')
+			 print_str(args);
 			compteur++;
 		i++;
 	}
