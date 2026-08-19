@@ -1,6 +1,7 @@
 m	?=	"Add new feature"
 
 all:
+	make -C ft_lib
 	make -C ft_linked_list
 	make -C ft_printf
 	gcc main.c \
@@ -8,20 +9,20 @@ all:
 		ft_printf/ft_printf.a
 
 clean:
-	make -C ft_linked_list clean
-	make -C ft_printf clean
 	make -C ft_lib clean
+	make -C ft_printf clean
+	make -C ft_linked_list clean
 
 fclean:
-	make -C ft_linked_list fclean
-	make -C ft_printf fclean
 	make -C ft_lib fclean
+	make -C ft_printf fclean
+	make -C ft_linked_list fclean
 	rm -f a.out
 
 re:
-	make -C ft_linked_list re
-	make -C ft_printf re
 	make -C ft_lib re
+	make -C ft_printf re
+	make -C ft_linked_list re
 
 push: 	fclean
 	git pull

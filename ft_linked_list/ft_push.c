@@ -1,5 +1,6 @@
 #include "ft_list.h"
-#include "../ft_lib/ft_lib.h"
+
+
 
 t_list *ft_push(t_list *l, void *data, int size)
 {
