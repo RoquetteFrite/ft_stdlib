@@ -1,35 +1,82 @@
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
+
+void ft_putnbr(int nb)
+{
+	long	i;
+	char	c;
+
+	i = nb;
+	if (i < 0)
+	{
+		write(1, "-", 1);
+		i *= -1;
+	}
+	if (i > 9)
+	{
+		ft_putnbr(i / 10);
+	}
+	c = (i % 10) + '0';
+	write(1, &c, 1);
+}
+
+void ft_putstr(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		write(1, &str[i], 1);
+}
+
+void print_int(va_list args)
+{
+	int	val;
+
+	val = va_arg(args, int);
+	ft_putnbr(val);
+}
+
+void print_str(va_list args)
+{
+	char	*str;
+
+	str = va_arg(args, char*);
+	ft_putstr(str);
+}
 
 int ft_printf(const char *format, ...)
 {
-	va_list args;
+	va_list		args;
+	int		i;
+
 	va_start(args, format);
-	int i = 0;
-	int compteur = 0;
+	i = 0;
 	while (format[i])
 	{
 		if (format[i] == '%')
 		{
 			if (format[i + 1] && format[i + 1] == 'd')
 				print_int(args);
-		    if (format[i + 1] && format[i + 1] == 's')
-			    print_str(args);
-			compteur++;
-		i++;
+			else if (format[i + 1] && format[i + 1] == 's')
+				print_str(args);
+			else if  (format[i + 1] && format[i + 1] == '%')
+				write(1, "%", 1);
+		 	else
+			 	return (-1);
+			i+=2;
+		} else {
+			write (1, &format[i], 1);
+			i++;
+		}
 	}
-	i = 0;
-    	while (i < compteur)
-	{
-		int val = va_arg(args, int);
-		printf("%d\n", val);
-		i++;
-	}
-	return compteur;
+	return i;
 }
 
 int main(void)
 {
-	ft_printf("% % %", 3, 42, 24);
+	ft_printf("test: %d %s fin", 42, "ft_test");
+	//ft_printf("test %%str%% %s", "tessssst");
 	return 0;
 }
