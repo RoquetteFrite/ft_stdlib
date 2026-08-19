@@ -75,8 +75,6 @@ int ft_printf(const char *format, ...)
 	}
 	return i;
 }
-<<<<<<< HEAD
-=======
 
 int pos_in_hex(int character)
 {
@@ -119,4 +117,3 @@ int pos_in_hex(int character)
     printf("%ld\n", ptr_value);
     return 0;
 }
->>>>>>> 4d8a707817b01a2b5aece2900d303a36b82a0ecb
