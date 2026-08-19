@@ -30,20 +30,22 @@ void ft_putstr(char *str)
 		write(1, &str[i], 1);
 }
 
-void print_int(va_list args)
+va_list print_int(va_list args)
 {
 	int	val;
 
 	val = va_arg(args, int);
 	ft_putnbr(val);
+	return args;
 }
 
-void print_str(va_list args)
+va_list print_str(va_list args)
 {
 	char	*str;
 
 	str = va_arg(args, char*);
 	ft_putstr(str);
+	return args;
 }
 
 int ft_printf(const char *format, ...)
@@ -58,9 +60,9 @@ int ft_printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			if (format[i + 1] && format[i + 1] == 'd')
-				print_int(args);
+				args = print_int(args);
 			else if (format[i + 1] && format[i + 1] == 's')
-				print_str(args);
+				args = print_str(args);
 			else if  (format[i + 1] && format[i + 1] == '%')
 				write(1, "%", 1);
 		 	else
@@ -76,7 +78,8 @@ int ft_printf(const char *format, ...)
 
 int main(void)
 {
-	ft_printf("test: %d %s fin", 42, "ft_test");
+	ft_printf("test: %d %s fin\n", 42, "ft_test");
 	//ft_printf("test %%str%% %s", "tessssst");
+	//ft_printf("%s%s", "first", " second");
 	return 0;
 }
