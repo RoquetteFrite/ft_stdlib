@@ -7,7 +7,7 @@ t_list *ft_push(t_list *l, void *data)
 	list = malloc(sizeof(t_list));
 	if (!list)
 		return (NULL);
-	list->data = data;
+	list->data = malloc(sizeof(data));
 	list->next = NULL;
 	while (l)
 	{

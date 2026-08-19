@@ -2,6 +2,12 @@
 #include "ft_printf/ft_printf.h"
 #include <stdio.h>
 
+typedef struct s_personne
+{
+	int age;
+	char *name;
+} t_personne;
+
 void	print_elem_int(t_list *elem)
 {
 	ft_printf("%d", *(int*)elem->data);
@@ -34,9 +40,18 @@ void	test_list()
 	print_list_int(list);
 }
 
+void display(void *data)
+{
+	t_personne *p = data;
+	ft_printf("%d - %s\n", p->age, p->name);
+}
+
 int	main(void)
 {
-	test_list();
-	ft_printf("test");
+	t_list *list;
+	t_personne p = {42, "ft"};
+	ft_push(list, &p);
+	ft_foreach(list, display);
+	// ft_printf("test");
 	return 0;
 }
