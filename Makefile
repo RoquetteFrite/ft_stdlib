@@ -10,15 +10,18 @@ all:
 clean:
 	make -C ft_linked_list clean
 	make -C ft_printf clean
+	make -C ft_lib clean
 
 fclean:
 	make -C ft_linked_list fclean
 	make -C ft_printf fclean
+	make -C ft_lib fclean
 	rm -r a.out
 
 re:
 	make -C ft_linked_list re
 	make -C ft_printf re
+	make -C ft_lib re
 
 push: 	fclean
 	git pull

@@ -111,9 +111,9 @@ int pos_in_hex(int character)
 //     int *ptr = NULL;
 //     size_t ptr_value;
 
-    ptr = malloc(sizeof(int));
-    ptr_value = (long int)ptr;
-    printf("ptr pointer: %p\n", ptr);
-    printf("%ld\n", ptr_value);
-    return 0;
-}
+//    ptr = malloc(sizeof(int));
+  //  ptr_value = (long int)ptr;
+    //printf("ptr pointer: %p\n", ptr);
+    //printf("%ld\n", ptr_value);
+    //return 0;
+//}
