@@ -1,13 +1,17 @@
 #include "ft_list.h"
+#include "../ft_lib/ft_lib.h"
 
-t_list *ft_push(t_list *l, void *data)
+t_list *ft_push(t_list *l, void *data, int size)
 {
 	t_list *list;
 
 	list = malloc(sizeof(t_list));
 	if (!list)
 		return (NULL);
-	list->data = malloc(sizeof(data));
+	list->data = malloc(sizeof(size));
+	if (!list->data)
+		return (NULL);
+	list->data = ft_memmove(list->data, data, size);
 	list->next = NULL;
 	while (l)
 	{

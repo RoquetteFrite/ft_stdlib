@@ -16,7 +16,7 @@ fclean:
 	make -C ft_linked_list fclean
 	make -C ft_printf fclean
 	make -C ft_lib fclean
-	rm -r a.out
+	rm -f a.out
 
 re:
 	make -C ft_linked_list re

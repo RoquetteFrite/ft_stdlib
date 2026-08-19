@@ -50,7 +50,7 @@ int	main(void)
 {
 	t_list *list;
 	t_personne p = {42, "ft"};
-	ft_push(list, &p);
+	ft_push(list, &p, sizeof(p));
 	ft_foreach(list, display);
 	// ft_printf("test");
 	return 0;
