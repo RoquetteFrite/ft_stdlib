@@ -11,10 +11,12 @@ ft_memcpy(void *restrict dst, const void *restrict src, size_t n)
     ft_dst = (unsigned char*)dst;
     ft_src = (const unsigned char*)src;
     i = 0;
-    while (ft_src[i] != NULL && i < n)
+	if (dst == src)
+		return (dst);
+    while (i < n)
     {
         ft_dst[i] = ft_src[i];
         i++;
     }
-    return (ft_dst);
+    return (dst);
 }
