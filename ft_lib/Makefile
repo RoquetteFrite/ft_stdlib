@@ -1,4 +1,7 @@
-SRC	=	ft_memmove.c
+SRC	=	ft_memmove.c \
+		ft_swap.c	\
+		ft_strlen.c	\
+		ft_strcmp.c
 
 OBJ	=	${SRC:.c=.o}
 
