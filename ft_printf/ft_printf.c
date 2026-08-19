@@ -75,6 +75,8 @@ int ft_printf(const char *format, ...)
 	}
 	return i;
 }
+<<<<<<< HEAD
+=======
 
 int pos_in_hex(int character)
 {
@@ -111,9 +113,10 @@ int pos_in_hex(int character)
 //     int *ptr = NULL;
 //     size_t ptr_value;
 
-//     ptr = malloc(sizeof(int));
-//     ptr_value = (long int)ptr;
-//     printf("ptr pointer: %p\n", ptr);
-//     printf("%ld\n", ptr_value);
-//     return 0;
-// }
+    ptr = malloc(sizeof(int));
+    ptr_value = (long int)ptr;
+    printf("ptr pointer: %p\n", ptr);
+    printf("%ld\n", ptr_value);
+    return 0;
+}
+>>>>>>> 4d8a707817b01a2b5aece2900d303a36b82a0ecb

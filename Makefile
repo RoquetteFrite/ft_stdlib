@@ -14,11 +14,11 @@ clean:
 fclean:
 	make -C ft_linked_list fclean
 	make -C ft_printf fclean
+	rm -r a.out
 
 re:
 	make -C ft_linked_list re
 	make -C ft_printf re
-	rm -f a.out
 
 push: 	fclean
 	git add .
