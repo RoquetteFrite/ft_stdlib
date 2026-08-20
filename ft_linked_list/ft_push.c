@@ -1,6 +1,5 @@
 #include "ft_list.h"
 
-
 void *ft_memmove(void *dest, const void *src, unsigned int size)
 {
 	unsigned int		i;

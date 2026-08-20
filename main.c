@@ -50,7 +50,9 @@ int	main(void)
 {
 	t_list *list = NULL;
 	t_personne p = {42, "ft"};
-	list = ft_push(list, &p, sizeof(t_personne));
+	t_personne pp = {1, "first"};
+	list = ft_push_back(list, &p, sizeof(t_personne));
+	list = ft_push_back(list, &pp, sizeof(t_personne));
 	if (list == NULL)
 		ft_printf("LIST NULL\n");
 	ft_foreach(list, display);
