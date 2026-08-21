@@ -2,6 +2,7 @@
 #pragma once
 
 #include <stdlib.h>
+#include <unistd.h>
 
 void *ft_memmove(void *dest, const void *src, unsigned int size);
 int ft_strlen(const char *str);
