@@ -53,10 +53,12 @@ int	main(void)
 	t_personne pp = {1, "first"};
 	list = ft_push_back(list, &p, sizeof(t_personne));
 	list = ft_push_back(list, &pp, sizeof(t_personne));
+	// list = ft_pop_front(list);
 	if (list == NULL)
 		ft_printf("LIST NULL\n");
 	ft_foreach(list, display);
-	ft_free(list);
+	ft_printf("%d\n", ft_list_find(list, &p));
+	ft_free_list(list);
 	// ft_printf("test");
 	return 0;
 }

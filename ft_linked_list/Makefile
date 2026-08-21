@@ -1,7 +1,10 @@
 SRC	=	ft_push.c 		\
 		ft_push_back.c	\
 		ft_foreach.c	\
-		ft_free.c
+		ft_free_list.c	\
+		ft_pop_front.c	\
+		ft_pop_back.c	\
+		ft_list_find.c
 
 OBJ	=	${SRC:.c=.o}
 
