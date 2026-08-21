@@ -56,6 +56,7 @@ int	main(void)
 	if (list == NULL)
 		ft_printf("LIST NULL\n");
 	ft_foreach(list, display);
+	ft_free(list);
 	// ft_printf("test");
 	return 0;
 }

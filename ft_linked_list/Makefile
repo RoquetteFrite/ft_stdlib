@@ -1,6 +1,7 @@
 SRC	=	ft_push.c 		\
 		ft_push_back.c	\
-		ft_foreach.c
+		ft_foreach.c	\
+		ft_free.c
 
 OBJ	=	${SRC:.c=.o}
 
