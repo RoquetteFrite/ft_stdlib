@@ -60,4 +60,5 @@ int main(void)
 	write(1, "\n", 1);
 	ft_putnbr_dec(test_dec);
 	printf("\n%f\n", test_dec - (int)test_dec);
+	printf("%.20f\n", 0.567);
 }
