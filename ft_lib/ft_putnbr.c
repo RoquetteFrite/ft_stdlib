@@ -28,7 +28,7 @@ void	ft_putnbr(int nbr)
 }
 
 
-int	main(void)
-{
-	ft_putnbr_long(-2147483648);
-}
+// int	main(void)
+// {
+// 	ft_putnbr_long(-2147483648);
+// }
