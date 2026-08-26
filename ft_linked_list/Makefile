@@ -4,7 +4,8 @@ SRC	=	ft_push.c 		\
 		ft_free_list.c	\
 		ft_pop_front.c	\
 		ft_pop_back.c	\
-		ft_list_find.c
+		ft_list_find.c	\
+		ft_remove_element.c
 
 OBJ	=	${SRC:.c=.o}
 

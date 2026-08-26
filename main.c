@@ -61,6 +61,7 @@ int	main(void)
 	// list = ft_pop_front(list);
 	if (list == NULL)
 		ft_printf("LIST NULL\n");
+	list = ft_remove_element(list, pp);
 	ft_foreach(list, display);
 	ft_printf("%d\n", ft_list_find(list, p));
 	ft_free_list(list);

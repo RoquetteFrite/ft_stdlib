@@ -13,5 +13,6 @@ void ft_free_list(t_list *t);
 t_list *ft_pop_front(t_list *l);
 t_list	*ft_pop_back(t_list *l);
 int ft_list_find(t_list *l, void *data);
+t_list *ft_remove_element(t_list *l, void *data);
 
 #endif
