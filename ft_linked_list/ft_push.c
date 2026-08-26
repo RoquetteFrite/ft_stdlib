@@ -27,20 +27,14 @@ void *ft_memmove(void *dest, const void *src, unsigned int size)
 	return (dest);
 }
 
-t_list *ft_push(t_list *l, void *data, int size)
+t_list *ft_push(t_list *l, void *data)
 {
 	t_list *list;
 
 	list = malloc(sizeof(t_list));
 	if (!list)
 		return (NULL);
-	list->data = malloc(size);
-	if (!list->data)
-	{
-		free(list);
-		return (NULL);
-	}
-	list->data = ft_memmove(list->data, data, size);
+	list->data = data;
 	list->next = l;
 	return (list);
 }

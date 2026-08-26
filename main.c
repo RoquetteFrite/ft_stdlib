@@ -1,5 +1,6 @@
 #include "ft_linked_list/ft_list.h"
 #include "ft_printf/ft_printf.h"
+#include "ft_lib/ft_lib.h"
 #include <stdio.h>
 
 typedef struct s_personne
@@ -49,15 +50,19 @@ void display(void *data)
 int	main(void)
 {
 	t_list *list = NULL;
-	t_personne p = {42, "ft"};
-	t_personne pp = {1, "first"};
-	list = ft_push_back(list, &p, sizeof(t_personne));
-	list = ft_push_back(list, &pp, sizeof(t_personne));
+	t_personne *p = malloc(sizeof(t_personne));
+	t_personne *pp = malloc(sizeof(t_personne));
+	p->age = 25;
+	p->name = ft_strdup("enzo");
+	pp->age = 30;
+	pp->name = ft_strdup("lucas");
+	list = ft_push(list, p);
+	list = ft_push(list, pp);
 	// list = ft_pop_front(list);
 	if (list == NULL)
 		ft_printf("LIST NULL\n");
 	ft_foreach(list, display);
-	ft_printf("%d\n", ft_list_find(list, &p));
+	ft_printf("%d\n", ft_list_find(list, p));
 	ft_free_list(list);
 	// ft_printf("test");
 	return 0;

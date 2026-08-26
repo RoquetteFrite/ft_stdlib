@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-t_list  *ft_push_back(t_list *list, void *data, int size);
-t_list  *ft_push(t_list *l, void *data, int size);
+t_list  *ft_push_back(t_list *list, void *data);
+t_list  *ft_push(t_list *l, void *data);
 void ft_foreach(t_list *list, void (*function)(void*));
 void ft_free_list(t_list *t);
 t_list *ft_pop_front(t_list *l);

@@ -6,7 +6,9 @@ SRC	=	ft_memmove.c \
 		ft_realloc.c	\
 		ft_calloc.c	\
 		ft_memset.c	\
-		ft_strstr.c
+		ft_strstr.c	\
+		ft_strcpy.c	\
+		ft_strncpy.c
 
 OBJ	=	${SRC:.c=.o}
 

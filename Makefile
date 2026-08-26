@@ -6,7 +6,8 @@ all:
 	make -C ft_printf
 	gcc main.c \
 		ft_linked_list/ft_linked_list.a\
-		ft_printf/ft_printf.a
+		ft_printf/ft_printf.a\
+		ft_lib/ft_lib.a
 
 clean:
 	make -C ft_lib clean
