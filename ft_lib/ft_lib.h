@@ -19,6 +19,7 @@ void ft_putnbr(int nbr);
 int ft_strlen(const char *str);
 char *strcpy(char *dest, const char *src);
 char *strncpy(char *dest, const char *src, unsigned int n);
+int ft_perror(const char *message, int fd, int return_value);
 
 
 
