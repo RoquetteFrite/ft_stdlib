@@ -1,5 +1,15 @@
 m	?=	"Add new feature"
 
+core:
+	
+	make -C ft_lib
+	make -C ft_linked_list
+	make -C ft_printf
+	gcc core_test.c \
+		ft_linked_list/ft_linked_list.a\
+		ft_printf/ft_printf.a\
+		ft_lib/ft_lib.a\
+
 all:
 	make -C ft_lib
 	make -C ft_linked_list
@@ -7,7 +17,7 @@ all:
 	gcc main.c \
 		ft_linked_list/ft_linked_list.a\
 		ft_printf/ft_printf.a\
-		ft_lib/ft_lib.a
+		ft_lib/ft_lib.a\
 
 clean:
 	make -C ft_lib clean
