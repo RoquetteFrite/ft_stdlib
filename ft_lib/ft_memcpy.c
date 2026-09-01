@@ -2,7 +2,7 @@
 
 #include <stddef.h>
 
-ft_memcpy(void *restrict dst, const void *restrict src, size_t n)
+void *ft_memcpy(void *restrict dst, const void *restrict src, size_t n)
 {
     unsigned char	*ft_dst;
     const char		*ft_src;

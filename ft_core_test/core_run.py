@@ -8,11 +8,8 @@ RESET = "\033[0m"
 lib_way = os.path.abspath("ft_lib.so")
 lib = ctypes.CDLL(lib_way)
 
-#lib.ft_strlen.restype = ctypes.c_int
-#lib.ft_strlen.argtypes = [ctypes.c_char_p]
-
-#lib.ft_strcmp.restype = ctypes.c_int
-#lib.ft_strcmp.argtypes = [ctypes.c_char_p]
+lib.ft_strcpy.restype = ctypes.c_char_p
+lib.ft_strncpy.restype = ctypes.c_char_p
 
 def display_message(function_name, output, expected):
     if (output == expected):
@@ -31,14 +28,23 @@ def core_int(fonction_name, args = 0, f = None, ex = 0, one = None, two = None, 
     elif (args == 2):
         ret = f(one, two)
     elif (args == 3):
-        ret = f(one, two, tree)
+        ret = f(one, two, three)
     elif (args == 4):
-        ret = f(one, two, tree, fout)
+        ret = f(one, two, three, fout)
     else:
         print("Error norminette")
     display_message(fonction_name, ret, ex)
 
 core_int("ft_strlen", 1, lib.ft_strlen, 3, b"aze")
-core_int("ft_strlen", 1, lib.ft_strlen, 3, b"azee")
+core_int("ft_strlen", 1, lib.ft_strlen, 0, b"")
+
 core_int("ft_strcmp", 2, lib.ft_strcmp, 0, b"aze", b"aze")
-core_int("ft_strcmp", 2, lib.ft_strcmp, 0, b"aze", b"azee")
+core_int("ft_strcmp", 2, lib.ft_strcmp, -97, b"aze", b"azeaze")
+
+core_int("ft_atoi", 1, lib.ft_atoi, 42, b"42")
+core_int("ft_atoi", 1, lib.ft_atoi, -12, b"-12")
+
+core_int("ft_strcpy", 2, lib.ft_strcpy, b"enzo", b"aze", b"enzo")
+
+core_int("ft_strncpy", 3, lib.ft_strncpy, b"enzo", b"aze", b"enzo", 4)
+core_int("ft_strncpy", 3, lib.ft_strncpy, b"enzo", b"aze", b"enzo", 6)

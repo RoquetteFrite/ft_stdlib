@@ -30,22 +30,20 @@ void ft_putstr(char *str)
 		write(1, &str[i], 1);
 }
 
-va_list print_int(va_list args)
+void print_int(va_list *args)
 {
 	int	val;
 
-	val = va_arg(args, int);
+	val = va_arg(*args, int);
 	ft_putnbr(val);
-	return args;
 }
 
-va_list print_str(va_list args)
+void print_str(va_list *args)
 {
 	char	*str;
 
-	str = va_arg(args, char*);
+	str = va_arg(*args, char*);
 	ft_putstr(str);
-	return args;
 }
 
 int ft_printf(const char *format, ...)
@@ -60,9 +58,9 @@ int ft_printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			if (format[i + 1] && format[i + 1] == 'd')
-				args = print_int(args);
+				print_int(&args);
 			else if (format[i + 1] && format[i + 1] == 's')
-				args = print_str(args);
+				print_str(&args);
 			else if  (format[i + 1] && format[i + 1] == '%')
 				write(1, "%", 1);
 		 	else

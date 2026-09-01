@@ -1,23 +1,16 @@
 m	?=	"Add new feature"
 
-core:
-	
-	make -C ft_lib
-	make -C ft_linked_list
-	make -C ft_printf
-	gcc core_test.c \
-		ft_linked_list/ft_linked_list.a\
-		ft_printf/ft_printf.a\
-		ft_lib/ft_lib.a\
+run:
+	gcc main.c \
+		ft_linked_list/ft_linked_list.a \
+		ft_printf/ft_printf.a \
+		ft_lib/ft_lib.a
 
 all:
 	make -C ft_lib
 	make -C ft_linked_list
 	make -C ft_printf
-	gcc main.c \
-		ft_linked_list/ft_linked_list.a\
-		ft_printf/ft_printf.a\
-		ft_lib/ft_lib.a\
+	$(run)
 
 clean:
 	make -C ft_lib clean
@@ -34,6 +27,7 @@ re:
 	make -C ft_lib re
 	make -C ft_printf re
 	make -C ft_linked_list re
+	$(run)
 
 push: 	fclean
 	git pull
