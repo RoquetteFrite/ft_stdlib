@@ -61,28 +61,48 @@ void ft_putstr(char *str)
 		write(1, &str[i], 1);
 }
 
-void print_int(va_list *args)
+int how_many_numbers(int val)
+{
+	int i;
+
+	i = 0;
+	while (val > 0) {
+		val /= 10;
+		i++;
+	}
+	return i;
+}
+
+int print_int(va_list *args)
 {
 	int	val;
 
 	val = va_arg(*args, int);
 	ft_putnbr(val);
+	return how_many_numbers(val);
 }
 
-void print_unsigned(va_list *args)
+int print_unsigned(va_list *args)
 {
 	int val;
 
 	val = va_arg(*args, unsigned int);
 	ft_unsigned_putnbr(val);
+	return how_many_numbers(val);
 }
 
-void print_str(va_list *args)
+int print_str(va_list *args)
 {
 	char	*str;
+	int	i;
 
 	str = va_arg(*args, char*);
 	ft_putstr(str);
+
+	i = 0;
+	while (str[i])
+		i++;
+	return i - 1;
 }
 
 void print_float(va_list *args)
@@ -134,12 +154,13 @@ void print_adress(va_list *args)
 	write(STDOUT_FILENO, &buffer[i], 19 - i);
 }
 
-void print_char(va_list *args)
+int print_char(va_list *args)
 {
 	char a;
 
 	a = va_arg(*args, int);
 	write(1, &a, 1);
+	return 1;
 }
 
 void print_hexa_minuscule(va_list *args)
@@ -210,10 +231,22 @@ void print_long(va_list *args)
 	ft_long_putnbr(val);
 }
 
+void write_space(va_list *args)
+{
+	int val;
+	int i;
+
+	i = 0;
+	val = va_arg(*args, int);
+	while (i++ < val)
+		write (1, " ", 1);
+}
+
 int ft_printf(const char *format, ...)
 {
 	va_list		args;
 	int		i;
+	int byte = 0;
 
 	va_start(args, format);
 	i = 0;
@@ -222,13 +255,13 @@ int ft_printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			if (format[i + 1] && format[i + 1] == 'd')
-				print_int(&args);
+				byte += print_int(&args) - 1;
 			else if (format[i + 1] && format[i + 1] == 'u')
-				print_unsigned(&args);
+				byte += print_unsigned(&args) - 1;
 			else if (format[i + 1] && format[i + 1] == 's')
-				print_str(&args);
+				byte += (print_str(&args));
 			else if (format[i + 1] && format[i + 1] == 'c')
-				print_char(&args);
+				byte += print_char(&args);
 			else if (format[i + 1] && format[i + 1] == 'p')
 				print_adress(&args);
 			else if (format[i + 1] && format[i + 1] == 'f')
@@ -246,20 +279,26 @@ int ft_printf(const char *format, ...)
 		 	else
 			 	return (-1);
 			i+=2;
+			byte++;
 		} else {
 			write (1, &format[i], 1);
 			i++;
+			byte++;
 		}
 	}
-	return i;
+	return byte;
 }
 
 // #include <stdlib.h>
 // int	main(void)
 // {
-// 	unsigned int	a = 45678;
+// 	int a = 25;
+// 	int b = 344;
+// 	char c[] = "Enzo";
 
-// 	ft_printf("Erreur\a\n");
-// 	printf("Erreur\a\n");
+// 	int x = printf("Bonjour je m'appelle %c, et j'ai %d ans.\n", 'c', a);
+// 	int y = ft_printf("Bonjour je m'appelle %c, et j'ai %d ans.\n", 'c', a);
+
+// 	printf("\n(return)\nprintf: %d\nft_printf:%d\n", x, y);
 // 	return (0);
 // }
