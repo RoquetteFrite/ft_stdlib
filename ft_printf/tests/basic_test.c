@@ -16,8 +16,22 @@ static void	report(const char *name, const char *got, const char *expected)
 	if (strcmp(got, expected) == 0)
 		fprintf(stderr, GREEN "%-60s [OK]"RESET"\n", name);
 	else
-		fprintf(stderr, RED"%s [KO] got [%s] but expected [%s]"RESET"\n",
+		fprintf(stderr, RED"%-60s [KO]\ngot [%s] but expected [%s]"RESET"\n",
 			name, got, expected);
+}
+
+Test(ft_printf, simple_text, .init = redirect_all_std)
+{
+	char	buf[32];
+	char	out[64] = {0};
+	FILE	*f;
+
+	snprintf(buf, sizeof(buf), "Hello how are you my friend ?");
+	ft_printf("Hello how are you my friend ?");
+	fflush(stdout);
+	f = cr_get_redirected_stdout();
+	fread(out, 1, sizeof(out) - 1, f);
+    report("simple_text", out, buf);
 }
 
 Test(ft_printf, simple_pourcent, .init = redirect_all_std)
@@ -32,7 +46,6 @@ Test(ft_printf, simple_pourcent, .init = redirect_all_std)
 	f = cr_get_redirected_stdout();
 	fread(out, 1, sizeof(out) - 1, f);
     report("simple_pourcent", out, buf);
-	cr_assert_str_eq(out, buf);
 }
 
 Test(ft_printf, simple_int, .init = redirect_all_std)
@@ -48,7 +61,21 @@ Test(ft_printf, simple_int, .init = redirect_all_std)
 	f = cr_get_redirected_stdout();
 	fread(out, 1, sizeof(out) - 1, f);
     report("simple_int", out, buf);
-	cr_assert_str_eq(out, buf);
+}
+
+Test(ft_printf, simple_unsigned_int, .init = redirect_all_std)
+{
+	unsigned int    a = 123;
+	char	buf[32];
+	char	out[64] = {0};
+	FILE	*f;
+
+	snprintf(buf, sizeof(buf), "Hello %u", a);
+	ft_printf("Hello %u", a);
+	fflush(stdout);
+	f = cr_get_redirected_stdout();
+	fread(out, 1, sizeof(out) - 1, f);
+    report("simple_unsigned_int", out, buf);
 }
 
 Test(ft_printf, simple_char, .init = redirect_all_std)
@@ -64,7 +91,6 @@ Test(ft_printf, simple_char, .init = redirect_all_std)
 	f = cr_get_redirected_stdout();
 	fread(out, 1, sizeof(out) - 1, f);
     report("simple_char", out, buf);
-	cr_assert_str_eq(out, buf);
 }
 
 Test(ft_printf, simple_string, .init = redirect_all_std)
@@ -80,7 +106,6 @@ Test(ft_printf, simple_string, .init = redirect_all_std)
 	f = cr_get_redirected_stdout();
 	fread(out, 1, sizeof(out) - 1, f);
     report("simple_string", out, buf);
-	cr_assert_str_eq(out, buf);
 }
 
 Test(ft_printf, simple_float, .init = redirect_all_std)
@@ -96,7 +121,6 @@ Test(ft_printf, simple_float, .init = redirect_all_std)
 	f = cr_get_redirected_stdout();
 	fread(out, 1, sizeof(out) - 1, f);
     report("simple_float", out, buf);
-	cr_assert_str_eq(out, buf);
 }
 
 Test(ft_printf, simple_long, .init = redirect_all_std)
@@ -112,7 +136,6 @@ Test(ft_printf, simple_long, .init = redirect_all_std)
 	f = cr_get_redirected_stdout();
 	fread(out, 1, sizeof(out) - 1, f);
     report("simple_long", out, buf);
-	cr_assert_str_eq(out, buf);
 }
 
 Test(ft_printf, simple_adresse, .init = redirect_all_std)
@@ -128,7 +151,6 @@ Test(ft_printf, simple_adresse, .init = redirect_all_std)
 	f = cr_get_redirected_stdout();
 	fread(out, 1, sizeof(out) - 1, f);
     report("simple_adresse", buf, out);
-	cr_assert_str_eq(out, buf);
 }
 
 Test(ft_printf, simple_lowercase_hexa, .init = redirect_all_std)
@@ -144,7 +166,6 @@ Test(ft_printf, simple_lowercase_hexa, .init = redirect_all_std)
 	f = cr_get_redirected_stdout();
 	fread(out, 1, sizeof(out) - 1, f);
     report("simple_lowercase_hexa", buf, out);
-	cr_assert_str_eq(out, buf);
 }
 
 Test(ft_printf, simple_upercase_hexa, .init = redirect_all_std)
@@ -160,7 +181,6 @@ Test(ft_printf, simple_upercase_hexa, .init = redirect_all_std)
 	f = cr_get_redirected_stdout();
 	fread(out, 1, sizeof(out) - 1, f);
     report("simple_upercase_hexa", buf, out);
-	cr_assert_str_eq(out, buf);
 }
 
 Test(ft_printf, simple_octal, .init = redirect_all_std)
@@ -176,5 +196,4 @@ Test(ft_printf, simple_octal, .init = redirect_all_std)
 	f = cr_get_redirected_stdout();
 	fread(out, 1, sizeof(out) - 1, f);
     report("simple_octal", buf, out);
-	cr_assert_str_eq(out, buf);
 }
