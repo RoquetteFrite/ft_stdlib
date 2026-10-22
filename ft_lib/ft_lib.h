@@ -14,7 +14,7 @@ void *ft_memset(void *s, int c, int n);
 char *ft_strstr(char *str, char *find);
 void ft_putstr(char *str);
 int ft_atoi(char *str);
-char **ft_split(char *str);
+char **ft_split(char *str, char *sep);
 void ft_putnbr(int nbr);
 int ft_strlen(const char *str);
 char *ft_strcpy(char *dest, const char *src);

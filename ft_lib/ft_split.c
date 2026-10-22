@@ -1,118 +1,83 @@
 #include "ft_lib.h"
 
-int	is_separator(char c)
+int is_sep(char c, char *sep)
 {
-	if (c == ' ' || c == '\n' || c == '\t' || c == '\v' /*il en manque*/)
-		return (1);
-	else
-		return (0);
+	int		x;
+
+	x = 0;
+	while (sep[x])
+		if (c == sep[x++])
+			return (1);
+	return (0);
 }
 
-int	count_words(char *str)
+int number_of_sep(const char *str, char *sep)
 {
-	int	i;
-	int	break_flag;
-	int count_words;
+	int		i;
+	int		separateur;
 
 	i = 0;
-	break_flag = 1;
-	count_words = 0;
+	separateur = 0;
 	while (str[i])
 	{
-		if (str[i] == ' ')
-			break_flag = 1;
-		if (break_flag && str[i] != ' ')
+		if (is_sep(str[i], sep))
+			separateur++;
+		i++;
+	}
+	return (separateur);
+}
+
+int until_sep(char *str, int i, char *sep)
+{
+	int		n;
+	int		y;
+
+	n = 0;
+	while (str[i] && !is_sep(str[i], sep))
+	{
+		i++;
+		n++;
+	}
+	return(n);
+}
+
+char **loop(char **split, char *str, char *sep, int y)
+{
+	int		i;
+	int		tmpi;
+	int		splity;
+
+	i= 0;
+	tmpi = 0;
+	splity = 0;
+	while (splity <= y)
+	{
+		split[splity] = malloc(sizeof(char) * (until_sep(str, i, sep) + 1));
+		if (!split[splity])
+			return (NULL);
+		while (str[i] && !is_sep(str[i], sep))
 		{
-			break_flag = 0;
-			count_words++;
+			split[splity][tmpi++] = str[i++];
 		}
-		i++;
+		split[splity][tmpi] = '\0';
+		tmpi = 0;
+		if (str[i + 1])
+			i++;
+		splity++;
 	}
-	return (count_words);
+	split[splity] = NULL;
+	return (split);
 }
 
-void ft_strcpy_delim(char *dest, char *src, char delim)
+char **ft_split(char *str, char *sep)
 {
-	int	i;
+	char	**split;
+	int		y;
 
-	i = 0;
-	while (src[i] && src[i] != delim)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-}
-
-int str_len_delim(char *str, char delim)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != delim)
-		i++;
-	return (i);
-}
-
-void ft_free_split_string(char **split_string)
-{
-	int	i;
-
-	i = 0;
-	while (split_string[i] != NULL)
-	{
-		free(split_string[i]);
-		i++;
-	}
-}
-
-char **ft_split(char *str)
-{
-	int	i;
-	int	break_flag;
-	int word_count;
-	char **split_string;
-
-	i = 0;
-	break_flag = 1;
-	word_count = 0;
-	split_string = malloc((count_words(str) + 1) * sizeof(char*));
-	if (split_string == NULL)
+	y = number_of_sep(str, sep);
+	split = malloc(sizeof(char*) * (y + 2));
+	if (!split)
 		return (NULL);
-	split_string[count_words(str)] = NULL;
-	while (str[i])
-	{
-		if (str[i] == ' ')
-			break_flag = 1;
-		if (break_flag && str[i] != ' ')
-		{
-			break_flag = 0;
-			split_string[word_count] = malloc(str_len_delim(&str[i], ' ') * sizeof(char));
-			if (split_string[word_count] == NULL)
-			{
-				ft_free_split_string(split_string);
-				return (NULL);
-			}
-			ft_strcpy_delim(split_string[word_count], &str[i], ' ');
-			word_count++;
-		}
-		i++;
-	}
-	return (split_string);
+	split = loop(split, str, sep, y);
+	return (split);
 }
-
-// #include <stdio.h>
-// int	main(int argc, char **argv)
-// {
-// 	int i;
-// 	char **split_string;
-
-// 	i = 0;
-// 	(void)argc;
-// 	split_string = ft_split(argv[1]);
-// 	printf("%d\n", count_words(argv[1]));
-// 	while (split_string[i] != NULL)
-// 	{
-// 		printf("%s, ", split_string[i]);
-// 		i++;
-// 	}
-// }
