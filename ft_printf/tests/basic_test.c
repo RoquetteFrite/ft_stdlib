@@ -6,7 +6,13 @@
 #define RED   "\033[31m"
 #define RESET "\033[0m"
 
-void	redirect_all_std(void)
+ReportHook(PRE_ALL)(struct criterion_test_set *tests)
+{
+	(void)tests;
+	fprintf(stderr, "===== Tests basic =====\n");
+}
+
+static void	redirect_all_std(void)
 {
 	cr_redirect_stdout();
 }

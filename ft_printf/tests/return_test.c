@@ -6,7 +6,14 @@
 #define RED   "\033[31m"
 #define RESET "\033[0m"
 
-void	redirect_all_std(void)
+
+ReportHook(PRE_ALL)(struct criterion_test_set *tests)
+{
+	(void)tests;
+	fprintf(stderr, "===== Tests de la valeur de retour de ft_printf =====\n");
+}
+
+static void	redirect_all_std(void)
 {
 	cr_redirect_stdout();
 }
@@ -67,4 +74,111 @@ Test(return_value, test_many_unsigned, .init = redirect_all_std)
     int ret_printf = printf("%u %u %u", (unsigned int)(122), (unsigned int)(12672), (unsigned int)(12267));
     int ret_ft_printf = ft_printf("%u %u %u", (unsigned int)(122), (unsigned int)(12672), (unsigned int)(12267));
     report("test_many_unsigned", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_memory_adress, .init = redirect_all_std)
+{
+    int a;
+
+    int ret_printf = printf("%p", &a);
+    int ret_ft_printf = ft_printf("%p", &a);
+    report("test_memory_adress", ret_ft_printf, ret_printf);
+}
+
+typedef struct t {
+    int a;
+} t;
+
+Test(return_value, test_many_memory_adress, .init = redirect_all_std)
+{
+    int a;
+    t tt;
+
+    int ret_printf = printf("%p %p", &a, &tt);
+    int ret_ft_printf = ft_printf("%p %p", &a, &tt);
+    report("test_many_memory_adress", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_float, .init = redirect_all_std)
+{
+    int ret_printf = printf("%f", 42.42f);
+    int ret_ft_printf = ft_printf("%f", 42.42f);
+    report("test_float", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_many_float, .init = redirect_all_std)
+{
+    int ret_printf = printf("%f %f %f", 42.42f, 56.7f, 99.58877f);
+    int ret_ft_printf = ft_printf("%f %f %f", 42.42f, 56.7f, 99.58877f);
+    report("test_many_float", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_hexa_lower, .init = redirect_all_std)
+{
+    int ret_printf = printf("%x", 45369);
+    int ret_ft_printf = ft_printf("%x", 45369);
+    report("test_hexa_lower", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_many_hexa_lower, .init = redirect_all_std)
+{
+    int ret_printf = printf("%x %x %x", 45369, 45852, 7855);
+    int ret_ft_printf = ft_printf("%x %x %x", 45369, 45852, 7855);
+    report("test_many_hexa_lower", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_hexa_upper, .init = redirect_all_std)
+{
+    int ret_printf = printf("%X", 45369);
+    int ret_ft_printf = ft_printf("%X", 45369);
+    report("test_hexa_upper", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_many_hexa_upper, .init = redirect_all_std)
+{
+    int ret_printf = printf("%X %X %X", 45369, 45852, 7855);
+    int ret_ft_printf = ft_printf("%X %X %X", 45369, 45852, 7855);
+    report("test_many_hexa_upper", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_octal, .init = redirect_all_std)
+{
+    int ret_printf = printf("%o", 45369);
+    int ret_ft_printf = ft_printf("%o", 45369);
+    report("test_octal", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_many_octal, .init = redirect_all_std)
+{
+    int ret_printf = printf("%o %o %o", 45369, 45852, 7855);
+    int ret_ft_printf = ft_printf("%o %o %o", 45369, 45852, 7855);
+    report("test_many_octal", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_long, .init = redirect_all_std)
+{
+    int ret_printf = printf("%ld", 453645555559);
+    int ret_ft_printf = ft_printf("%ld", 453645555559);
+    report("test_long", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_many_long, .init = redirect_all_std)
+{
+    int ret_printf = printf("%ld %ld %ld", 4536945585, 4536948585, 45369455855144);
+    int ret_ft_printf = ft_printf("%ld %ld %ld", 4536945585, 4536948585, 45369455855144);
+    report("test_many_long", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_percentage, .init = redirect_all_std)
+{
+    int ret_printf = printf("%%");
+    int ret_ft_printf = ft_printf("%%");
+    report("test_percentage", ret_ft_printf, ret_printf);
+}
+
+Test(return_value, test_many_percentage, .init = redirect_all_std)
+{
+    int ret_printf = printf("%% %% %%");
+    int ret_ft_printf = ft_printf("%% %% %%");
+    report("test_many_percentage", ret_ft_printf, ret_printf);
 }
