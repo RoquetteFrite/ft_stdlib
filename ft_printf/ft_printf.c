@@ -32,7 +32,7 @@ void ft_long_putnbr(long nb)
 	}
 	if (nb> 9)
 	{
-		ft_putnbr(nb/ 10);
+		ft_long_putnbr(nb/ 10);
 	}
 	c = (nb% 10) + '0';
 	write(1, &c, 1);
@@ -40,18 +40,13 @@ void ft_long_putnbr(long nb)
 
 void ft_unsigned_putnbr(unsigned int nb)
 {
-	unsigned long	i;
 	char	c;
+	unsigned long int i;
 
 	i = nb;
-	if (i < 0)
-	{
-		write(1, "-", 1);
-		i *= -1;
-	}
 	if (i > 9)
 	{
-		ft_putnbr(i / 10);
+		ft_unsigned_putnbr(i / 10);
 	}
 	c = (i % 10) + '0';
 	write(1, &c, 1);
@@ -72,6 +67,14 @@ void print_int(va_list *args)
 
 	val = va_arg(*args, int);
 	ft_putnbr(val);
+}
+
+void print_unsigned(va_list *args)
+{
+	int val;
+
+	val = va_arg(*args, unsigned int);
+	ft_unsigned_putnbr(val);
 }
 
 void print_str(va_list *args)
@@ -199,14 +202,6 @@ void print_octal(va_list *args)
 	write(STDOUT_FILENO, &buffer[i], 8 - i);
 }
 
-void print_unsigned(va_list *args)
-{
-	unsigned int	val;
-
-	val = va_arg(*args, unsigned int);
-	ft_unsigned_putnbr(val);
-}
-
 void print_long(va_list *args)
 {
 	long val;
@@ -228,6 +223,8 @@ int ft_printf(const char *format, ...)
 		{
 			if (format[i + 1] && format[i + 1] == 'd')
 				print_int(&args);
+			else if (format[i + 1] && format[i + 1] == 'u')
+				print_unsigned(&args);
 			else if (format[i + 1] && format[i + 1] == 's')
 				print_str(&args);
 			else if (format[i + 1] && format[i + 1] == 'c')
@@ -257,11 +254,12 @@ int ft_printf(const char *format, ...)
 	return i;
 }
 
+// #include <stdlib.h>
 // int	main(void)
 // {
-// 	int	a;
+// 	unsigned int	a = 45678;
 
-// 	ft_printf("[%p]\n", (void *)&a);
-// 	printf("[%p]\n", (void *)&a);
+// 	ft_printf("Erreur\a\n");
+// 	printf("Erreur\a\n");
 // 	return (0);
 // }
