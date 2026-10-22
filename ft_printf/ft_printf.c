@@ -2,6 +2,16 @@
 #include <stdarg.h>
 #include <unistd.h>
 
+int ft_strlen(char *str)
+{
+	int i;
+	
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 void ft_putnbr(int nb)
 {
 	long	i;
@@ -73,6 +83,18 @@ int how_many_numbers(int val)
 	return i;
 }
 
+int how_many_long_numbers(long val)
+{
+	int i;
+
+	i = 0;
+	while (val > 0) {
+		val /= 10;
+		i++;
+	}
+	return i;
+}
+
 int print_int(va_list *args)
 {
 	int	val;
@@ -102,10 +124,10 @@ int print_str(va_list *args)
 	i = 0;
 	while (str[i])
 		i++;
-	return i - 1;
+	return i;
 }
 
-void print_float(va_list *args)
+int print_float(va_list *args)
 {
 	float	val;
 	int right;
@@ -125,13 +147,14 @@ void print_float(va_list *args)
 		tmp *= 10;
 		i++;
 	}
-	right = (int)((mul * dec) + 0.5f);
+	right = (int)((mul * dec)) + 1.0f;
 	ft_putnbr(left);
 	write(1, ".", 1);
 	ft_putnbr(right);
+	return how_many_numbers(left) + how_many_numbers(right) + 1;
 }
 
-void print_adress(va_list *args)
+int print_adress(va_list *args)
 {
     const char hex[] = "0123456789abcdef";
 	char buffer[19];
@@ -152,6 +175,7 @@ void print_adress(va_list *args)
 	buffer[i--] = 'x';
 	buffer[i] = '0';
 	write(STDOUT_FILENO, &buffer[i], 19 - i);
+	return 19 - i - 1;
 }
 
 int print_char(va_list *args)
@@ -163,14 +187,16 @@ int print_char(va_list *args)
 	return 1;
 }
 
-void print_hexa_minuscule(va_list *args)
+int print_hexa_minuscule(va_list *args)
 {
 	const char hex[] = "0123456789abcdef";
 	char buffer[8];
 	unsigned int address;
 	int i;
+	int count;
 
 	i = 8;
+	count = 0;
 	address = va_arg(*args, unsigned int);
 	if (address == 0)
 		buffer[--i] = '0'; // mettre (nil)
@@ -179,17 +205,21 @@ void print_hexa_minuscule(va_list *args)
 		{
 			buffer[--i] = hex[address % 16];	
 			address /= 16;
+			count++;
 		}
 	write(STDOUT_FILENO, &buffer[i], 8 - i);
+	return (count);
 }
 
-void print_hexa_uppercase(va_list *args)
+int print_hexa_uppercase(va_list *args)
 {
 	const char hex[] = "0123456789ABCDEF";
 	char buffer[8];
 	unsigned int address;
 	int i;
+	int count;
 
+	count = 0;
 	i = 8;
 	address = va_arg(*args, unsigned int);
 	if (address == 0)
@@ -199,19 +229,23 @@ void print_hexa_uppercase(va_list *args)
 		{
 			buffer[--i] = hex[address % 16];	
 			address /= 16;
+			count++;
 		}
 	write(STDOUT_FILENO, &buffer[i], 8 - i);
+	return count;
 }
 
-void print_octal(va_list *args)
+int print_octal(va_list *args)
 {
 	const char hex[] = "01234567";
 	char buffer[8];
 	unsigned int address;
 	int i;
+	int count;
 
 	i = 8;
 	address = va_arg(*args, unsigned int);
+	count = 0;
 	if (address == 0)
 		buffer[--i] = '0';
 	else
@@ -219,16 +253,19 @@ void print_octal(va_list *args)
 		{
 			buffer[--i] = hex[address % 8];	
 			address /= 8;
+			count++;
 		}
 	write(STDOUT_FILENO, &buffer[i], 8 - i);
+	return count;
 }
 
-void print_long(va_list *args)
+int print_long(va_list *args)
 {
 	long val;
 
 	val = va_arg(*args, long);
 	ft_long_putnbr(val);
+	return how_many_long_numbers(val);
 }
 
 void write_space(va_list *args)
@@ -240,6 +277,12 @@ void write_space(va_list *args)
 	val = va_arg(*args, int);
 	while (i++ < val)
 		write (1, " ", 1);
+}
+
+int write_percentage(void)
+{
+	write(1, "%", 1);
+	return 1;
 }
 
 int ft_printf(const char *format, ...)
@@ -255,31 +298,30 @@ int ft_printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			if (format[i + 1] && format[i + 1] == 'd')
-				byte += print_int(&args) - 1;
+				byte += print_int(&args);
 			else if (format[i + 1] && format[i + 1] == 'u')
-				byte += print_unsigned(&args) - 1;
+				byte += print_unsigned(&args);
 			else if (format[i + 1] && format[i + 1] == 's')
 				byte += (print_str(&args));
 			else if (format[i + 1] && format[i + 1] == 'c')
 				byte += print_char(&args);
 			else if (format[i + 1] && format[i + 1] == 'p')
-				print_adress(&args);
+				byte += print_adress(&args);
 			else if (format[i + 1] && format[i + 1] == 'f')
-				print_float(&args);
+				byte += print_float(&args);
 			else if (format[i + 1] && format[i + 1] == 'x')
-				print_hexa_minuscule(&args);
+				byte += print_hexa_minuscule(&args);
 			else if (format[i + 1] && format[i + 1] == 'X')
-				print_hexa_uppercase(&args);
+				byte += print_hexa_uppercase(&args);
 			else if (format[i + 1] && format[i + 1] == 'o')
-				print_octal(&args);
+				byte += print_octal(&args);
 			else if (format[i + 1] && format[i + 2] && format[i + 1] == 'l' && format[i++ + 2] == 'd')
-				print_long(&args);
+				byte += print_long(&args);
 			else if  (format[i + 1] && format[i + 1] == '%')
-				write(1, "%", 1);
+				byte += write_percentage();
 		 	else
 			 	return (-1);
 			i+=2;
-			byte++;
 		} else {
 			write (1, &format[i], 1);
 			i++;
@@ -296,8 +338,8 @@ int ft_printf(const char *format, ...)
 // 	int b = 344;
 // 	char c[] = "Enzo";
 
-// 	int x = printf("Bonjour je m'appelle %c, et j'ai %d ans.\n", 'c', a);
-// 	int y = ft_printf("Bonjour je m'appelle %c, et j'ai %d ans.\n", 'c', a);
+// 	int x = printf("%f %f %f\n", 42.42f, 56.7f, 99.58877f);
+// 	int y = ft_printf("%f %f %f\n", 42.42f, 56.7f, 99.58877f);
 
 // 	printf("\n(return)\nprintf: %d\nft_printf:%d\n", x, y);
 // 	return (0);
