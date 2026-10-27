@@ -1,6 +1,5 @@
+#include "ft_printf.h"
 #include <stdio.h>
-#include <stdarg.h>
-#include <unistd.h>
 
 int ft_strlen(char *str)
 {
@@ -12,160 +11,180 @@ int ft_strlen(char *str)
 	return (i);
 }
 
-void ft_putnbr(int nb)
+int ft_putnbr(int nb, int size)
 {
 	long	i;
 	char	c;
 
+	// printf("ft_putnbr\n");
 	i = nb;
 	if (i < 0)
 	{
-		write(1, "-", 1);
+		size += write(1, "-", 1);
 		i *= -1;
 	}
 	if (i > 9)
 	{
-		ft_putnbr(i / 10);
+		size = ft_putnbr(i / 10, size);
 	}
 	c = (i % 10) + '0';
-	write(1, &c, 1);
+	size += write(1, &c, 1);
+	return(size);
 }
 
-void ft_long_putnbr(long nb)
+int ft_putnbr_long(long nb, int size)
 {
 	char	c;
 
+	// printf("ft_putnbr_long\n");
 	if (nb< 0)
 	{
-		write(1, "-", 1);
+		size += write(1, "-", 1);
 		nb*= -1;
 	}
 	if (nb> 9)
 	{
-		ft_long_putnbr(nb/ 10);
+		size = ft_putnbr_long(nb / 10, size);
 	}
 	c = (nb% 10) + '0';
-	write(1, &c, 1);
+	size += write(1, &c, 1);
+	return (size);
 }
 
-void ft_unsigned_putnbr(unsigned int nb)
+int ft_putstr(const char *str)
+{
+	int	i;
+	int size;
+	
+	// printf("ft_putstr\n");
+	i = -1;
+	size = 0;
+	while (str[++i])
+		size += write(1, &str[i], 1);
+	return (size);
+}
+
+int ft_putchar(int c)
+{
+	char	a;
+	// printf("ft_putchar\n");
+	a = c;
+	return (write(1, &a, 1));
+}
+
+int ft_unsigned_putnbr(unsigned int nb, int size)
 {
 	char	c;
-	unsigned long int i;
 
-	i = nb;
-	if (i > 9)
+	// printf("ft_unsigned_putnbr\n");
+	if (nb > 9)
 	{
-		ft_unsigned_putnbr(i / 10);
+		size = ft_unsigned_putnbr(nb / 10, size);
 	}
-	c = (i % 10) + '0';
-	write(1, &c, 1);
+	c = (nb % 10) + '0';
+	size += write(1, &c, 1);
+	return (size);
 }
 
-void ft_putstr(char *str)
+int ft_unsi_long_putnbr(unsigned long nb, int size)
 {
-	int	i;
+	char	c;
 
-	i = -1;
-	while (str[++i])
-		write(1, &str[i], 1);
+	// printf("ft_unsi_long_putnbr\n");
+	if (nb > 9)
+	{
+		size = ft_unsigned_putnbr(nb / 10, size);
+	}
+	c = (nb % 10) + '0';
+	size += write(1, &c, 1);
+	return (size);
 }
 
-int how_many_numbers(int val)
+int ft_putnbr_octal(unsigned int nb)
 {
+	const char hex[] = "01234567";
+	char buffer[8];
 	int i;
 
-	i = 0;
-	while (val > 0) {
-		val /= 10;
-		i++;
-	}
-	return i;
+	i = 8;
+	if (nb == 0)
+		buffer[--i] = '0';
+	else
+		while (nb > 0)
+		{
+			buffer[--i] = hex[nb % 8];	
+			nb /= 8;
+		}
+	return (write(STDOUT_FILENO, &buffer[i], 8 - i));
 }
 
-int how_many_long_numbers(long val)
+int ft_long_octal(unsigned long nb)
 {
+	const char hex[] = "01234567";
+	char buffer[8];
 	int i;
 
-	i = 0;
-	while (val > 0) {
-		val /= 10;
-		i++;
-	}
-	return i;
+	// printf("ft_long_octal\n");
+	i = 8;
+	if (nb == 0)
+		buffer[--i] = '0';
+	else
+		while (nb > 0)
+		{
+			buffer[--i] = hex[nb % 8];	
+			nb /= 8;
+		}
+	return (write(STDOUT_FILENO, &buffer[i], 8 - i));
 }
 
-int print_int(va_list *args)
+int ft_hexa(unsigned int adress, char *base)
 {
-	int	val;
+	char buffer[8];
+	int i;
 
-	val = va_arg(*args, int);
-	ft_putnbr(val);
-	return how_many_numbers(val);
+	i = 8;
+	if (adress == 0)
+		buffer[--i] = '0'; // mettre (nil)
+	else
+		while (adress > 0)
+		{
+			buffer[--i] = base[adress % 16];	
+			adress /= 16;
+		}
+	return (write(STDOUT_FILENO, &buffer[i], 8 - i));
 }
 
-int print_unsigned(va_list *args)
+int parsing_u_int(t_path *path)
 {
-	int val;
-
-	val = va_arg(*args, unsigned int);
-	ft_unsigned_putnbr(val);
-	return how_many_numbers(val);
+	if (path->flag & F_O)
+		return (ft_putnbr_octal(va_arg(path->args, unsigned int)));
+	if (path->flag & F_U)
+		return (ft_unsigned_putnbr(va_arg(path->args, unsigned int), 0));
+	if (path->flag & F_X)
+		return (ft_hexa(va_arg(path->args, unsigned int), "0123456789abcdef"));
+	if (path->flag & F_X_U)
+		return (ft_hexa(va_arg(path->args, unsigned int), "0123456789ABCDEF"));
 }
 
-int print_str(va_list *args)
+int parsing_u_long(t_path *path)
 {
-	char	*str;
-	int	i;
-
-	str = va_arg(*args, char*);
-	ft_putstr(str);
-
-	i = 0;
-	while (str[i])
-		i++;
-	return i;
+	if (path->flag & F_O_U)
+		return (ft_long_octal(va_arg(path->args, unsigned long)));
+	if (path->flag & F_U_U)
+		return (ft_unsi_long_putnbr(va_arg(path->args, unsigned long), 0));
 }
 
-int print_float(va_list *args)
-{
-	float	val;
-	int right;
-	int left;
-	float dec;
-	int mul = 1;
-	int limit = 6;
-	int i = 0;
-
-	val = va_arg(*args, double);
-	left = (int) val;
-	dec = val - left;
-	float tmp = dec;
-	while ((tmp - (int)tmp) > 0.00001f && i < limit)
-	{
-		mul *= 10;
-		tmp *= 10;
-		i++;
-	}
-	right = (int)((mul * dec)) + 1.0f;
-	ft_putnbr(left);
-	write(1, ".", 1);
-	ft_putnbr(right);
-	return how_many_numbers(left) + how_many_numbers(right) + 1;
-}
-
-int print_adress(va_list *args)
+int print_adress(unsigned long address)
 {
     const char hex[] = "0123456789abcdef";
 	char buffer[19];
-	unsigned long address;
 	int i;
 
+	// printf("print_adress\n");
 	i = 18;
-	address = (unsigned long)va_arg(*args, void*);
 	buffer[i--] = '\0';
 	if (address == 0)
-		buffer[i--] = '0';
+		return (write(1, "(nil)", 5));
 	else
 		while (address > 0 && i >= 2)
 		{
@@ -174,173 +193,109 @@ int print_adress(va_list *args)
 		}
 	buffer[i--] = 'x';
 	buffer[i] = '0';
-	write(STDOUT_FILENO, &buffer[i], 19 - i);
-	return 19 - i - 1;
+	return (write(STDOUT_FILENO, &buffer[i], 18 - i));
 }
 
-int print_char(va_list *args)
+int general_parsing(t_path *path)
 {
-	char a;
-
-	a = va_arg(*args, int);
-	write(1, &a, 1);
-	return 1;
+	if (path->flag & F_INT)
+		return (ft_putnbr(va_arg(path->args, int), 0));
+	if (path->flag & F_LONG)
+		return (ft_putnbr_long(va_arg(path->args, long), 0));
+	if (path->flag & F_STR)
+		return (ft_putstr(va_arg(path->args, char*)));
+	if (path->flag & F_CHAR)
+		return (ft_putchar(va_arg(path->args, int)));
+	if (path->flag & F_U_INT)
+		return parsing_u_int(path);
+	if (path->flag & F_U_LONG)
+		return (parsing_u_long(path));
+	if (path->flag & F_PER)
+		ft_putchar((int)'%');
+	if (path->flag & F_PER)
+		ft_putchar((int)'%');
+	if (path->flag & F_P)
+		return (print_adress(va_arg(path->args, unsigned long)));
 }
 
-int print_hexa_minuscule(va_list *args)
+int analyse_specifiers(t_path *path)
 {
-	const char hex[] = "0123456789abcdef";
-	char buffer[8];
-	unsigned int address;
-	int i;
-	int count;
-
-	i = 8;
-	count = 0;
-	address = va_arg(*args, unsigned int);
-	if (address == 0)
-		buffer[--i] = '0'; // mettre (nil)
-	else
-		while (address > 0)
-		{
-			buffer[--i] = hex[address % 16];	
-			address /= 16;
-			count++;
-		}
-	write(STDOUT_FILENO, &buffer[i], 8 - i);
-	return (count);
+	if (path->flag & F_O || path->flag & F_O_U)
+		return (write (1, "0", 1));
+	if (path->flag & F_X)
+		return (write (1, "0x", 2));
+	if (path->flag & F_X_U)
+		return (write (1, "0X", 2));
 }
 
-int print_hexa_uppercase(va_list *args)
+int is_format_spe(char c)
 {
-	const char hex[] = "0123456789ABCDEF";
-	char buffer[8];
-	unsigned int address;
-	int i;
-	int count;
+    const char *flags = "sSpDdioOuUxXcC%";
+    int i;
 
-	count = 0;
-	i = 8;
-	address = va_arg(*args, unsigned int);
-	if (address == 0)
-		buffer[--i] = '0'; // mettre (nil)
-	else
-		while (address > 0)
-		{
-			buffer[--i] = hex[address % 16];	
-			address /= 16;
-			count++;
-		}
-	write(STDOUT_FILENO, &buffer[i], 8 - i);
-	return count;
-}
-
-int print_octal(va_list *args)
-{
-	const char hex[] = "01234567";
-	char buffer[8];
-	unsigned int address;
-	int i;
-	int count;
-
-	i = 8;
-	address = va_arg(*args, unsigned int);
-	count = 0;
-	if (address == 0)
-		buffer[--i] = '0';
-	else
-		while (address > 0)
-		{
-			buffer[--i] = hex[address % 8];	
-			address /= 8;
-			count++;
-		}
-	write(STDOUT_FILENO, &buffer[i], 8 - i);
-	return count;
-}
-
-int print_long(va_list *args)
-{
-	long val;
-
-	val = va_arg(*args, long);
-	ft_long_putnbr(val);
-	return how_many_long_numbers(val);
-}
-
-void write_space(va_list *args)
-{
-	int val;
-	int i;
-
-	i = 0;
-	val = va_arg(*args, int);
-	while (i++ < val)
-		write (1, " ", 1);
-}
-
-int write_percentage(void)
-{
-	write(1, "%", 1);
-	return 1;
+    i = 0;
+    while (flags[i])
+    {
+        if (flags[i] == c)
+            return (1);
+        i++;
+    }
+    return (0);
 }
 
 int ft_printf(const char *format, ...)
 {
-	va_list		args;
-	int		i;
-	int byte = 0;
+	t_path	path;
+	int		n;
+	int		size;
+	const char *flags = "sSpDdioOuUxXcC%#0-+HhlLjz";
 
-	va_start(args, format);
-	i = 0;
-	while (format[i])
+	path.i = 0;
+	path.val = 0;
+	path.format = (char *)format;
+	size = 0;
+	va_start(path.args, format);
+	while (path.format[path.i])
 	{
-		if (format[i] == '%')
+		if (path.format[path.i] == '%')
 		{
-			if (format[i + 1] && format[i + 1] == 'd')
-				byte += print_int(&args);
-			else if (format[i + 1] && format[i + 1] == 'u')
-				byte += print_unsigned(&args);
-			else if (format[i + 1] && format[i + 1] == 's')
-				byte += (print_str(&args));
-			else if (format[i + 1] && format[i + 1] == 'c')
-				byte += print_char(&args);
-			else if (format[i + 1] && format[i + 1] == 'p')
-				byte += print_adress(&args);
-			else if (format[i + 1] && format[i + 1] == 'f')
-				byte += print_float(&args);
-			else if (format[i + 1] && format[i + 1] == 'x')
-				byte += print_hexa_minuscule(&args);
-			else if (format[i + 1] && format[i + 1] == 'X')
-				byte += print_hexa_uppercase(&args);
-			else if (format[i + 1] && format[i + 1] == 'o')
-				byte += print_octal(&args);
-			else if (format[i + 1] && format[i + 2] && format[i + 1] == 'l' && format[i++ + 2] == 'd')
-				byte += print_long(&args);
-			else if  (format[i + 1] && format[i + 1] == '%')
-				byte += write_percentage();
-		 	else
-			 	return (-1);
-			i+=2;
-		} else {
-			write (1, &format[i], 1);
-			i++;
-			byte++;
+			path.i++;
+			path.flag = 0;
+			while (path.format[path.i])
+			{
+				n = 0;
+				while (flags[n] && flags[n] != path.format[path.i])
+					n++;
+				if (flags[n])
+				{
+					path.flag |= (1 << n);
+					if (is_format_spe(path.format[path.i]))
+						break;
+				}
+				path.i++;
+			}
+			if (path.flag & F_BASE)
+				size += analyse_specifiers(&path);
+			size += general_parsing(&path);
 		}
+		else
+			size += write(1, &path.format[path.i], 1);
+		path.i++;
 	}
-	return byte;
+	return (size);
 }
 
-// #include <stdlib.h>
-// int	main(void)
-// {
-// 	int a = 25;
-// 	int b = 344;
-// 	char c[] = "Enzo";
+int	main(void)
+{
+	unsigned int mon_nombre = 149;
 
-// 	int x = printf("%f %f %f\n", 42.42f, 56.7f, 99.58877f);
-// 	int y = ft_printf("%f %f %f\n", 42.42f, 56.7f, 99.58877f);
+	int ret_a = 0, ret_b = 0;
+    
+    // printf("%-10da\n", mon_nombre);   // Affiche 0xff
+    ret_a = printf("%#d %#x %#X %#lo %#o\n", mon_nombre, mon_nombre, mon_nombre, mon_nombre, mon_nombre);
+    ret_b = ft_printf("%#d %#x %#X %#O %#o\n", mon_nombre, mon_nombre, mon_nombre, mon_nombre, mon_nombre);
 
-// 	printf("\n(return)\nprintf: %d\nft_printf:%d\n", x, y);
-// 	return (0);
-// }
+	printf("return value %d %d\n", ret_a, ret_b);
+	
+	return (0);
+}

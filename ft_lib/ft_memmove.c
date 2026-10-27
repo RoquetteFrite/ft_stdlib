@@ -1,4 +1,4 @@
-#include "ft_lib.h"
+#include "libft.h"
 
 void *ft_memmove(void *dest, const void *src, unsigned int size)
 {
@@ -21,7 +21,6 @@ void *ft_memmove(void *dest, const void *src, unsigned int size)
 		{
 			i--;
 			d[i] = s[i];
-
 		}
 	}
 	return (dest);

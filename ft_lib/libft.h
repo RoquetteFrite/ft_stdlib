@@ -3,18 +3,24 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+typedef struct      s_list
+{
+    void            *content;
+    struct s_list   *next;
+}                   t_list;
+
 void *ft_memmove(void *dest, const void *src, unsigned int size);
 int ft_strlen(const char *str);
 void ft_swap(void *a, void *b);
 int ft_strcmp(char *s1, char *s2);
 char *ft_strdup(const char *str);
 void *ft_realloc(void *ptr, int new_size, int current_size, int sizeof_type);
-void *ft_calloc(int sizeof_type, int size);
+void *ft_calloc(size_t sizeof_type, size_t size);
 void *ft_memset(void *s, int c, int n);
 char *ft_strstr(char *str, char *find);
 void ft_putstr(char *str);
-int ft_atoi(char *str);
-char **ft_split(char *str, char *sep);
+int ft_atoi(const char *str);
+char **ft_split(char const *s, char c);
 void ft_putnbr(int nbr);
 int ft_strlen(const char *str);
 char *ft_strcpy(char *dest, const char *src);
