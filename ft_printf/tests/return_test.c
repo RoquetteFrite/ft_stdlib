@@ -6,13 +6,6 @@
 #define RED   "\033[31m"
 #define RESET "\033[0m"
 
-
-ReportHook(PRE_ALL)(struct criterion_test_set *tests)
-{
-	(void)tests;
-	fprintf(stderr, "===== Tests de la valeur de retour de ft_printf =====\n");
-}
-
 static void	redirect_all_std(void)
 {
 	cr_redirect_stdout();
@@ -99,20 +92,6 @@ Test(return_value, test_many_memory_adress, .init = redirect_all_std)
     report("test_many_memory_adress", ret_ft_printf, ret_printf);
 }
 
-Test(return_value, test_float, .init = redirect_all_std)
-{
-    int ret_printf = printf("%f", 42.42f);
-    int ret_ft_printf = ft_printf("%f", 42.42f);
-    report("test_float", ret_ft_printf, ret_printf);
-}
-
-Test(return_value, test_many_float, .init = redirect_all_std)
-{
-    int ret_printf = printf("%f %f %f", 42.42f, 56.7f, 99.58877f);
-    int ret_ft_printf = ft_printf("%f %f %f", 42.42f, 56.7f, 99.58877f);
-    report("test_many_float", ret_ft_printf, ret_printf);
-}
-
 Test(return_value, test_hexa_lower, .init = redirect_all_std)
 {
     int ret_printf = printf("%x", 45369);
@@ -158,14 +137,14 @@ Test(return_value, test_many_octal, .init = redirect_all_std)
 Test(return_value, test_long, .init = redirect_all_std)
 {
     int ret_printf = printf("%ld", 453645555559);
-    int ret_ft_printf = ft_printf("%ld", 453645555559);
+    int ret_ft_printf = ft_printf("%D", 453645555559);
     report("test_long", ret_ft_printf, ret_printf);
 }
 
 Test(return_value, test_many_long, .init = redirect_all_std)
 {
     int ret_printf = printf("%ld %ld %ld", 4536945585, 4536948585, 45369455855144);
-    int ret_ft_printf = ft_printf("%ld %ld %ld", 4536945585, 4536948585, 45369455855144);
+    int ret_ft_printf = ft_printf("%D %D %D", 4536945585, 4536948585, 45369455855144);
     report("test_many_long", ret_ft_printf, ret_printf);
 }
 

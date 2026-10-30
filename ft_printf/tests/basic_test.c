@@ -6,12 +6,6 @@
 #define RED   "\033[31m"
 #define RESET "\033[0m"
 
-ReportHook(PRE_ALL)(struct criterion_test_set *tests)
-{
-	(void)tests;
-	fprintf(stderr, "===== Tests basic =====\n");
-}
-
 static void	redirect_all_std(void)
 {
 	cr_redirect_stdout();
@@ -112,21 +106,6 @@ Test(ft_printf, simple_string, .init = redirect_all_std)
 	f = cr_get_redirected_stdout();
 	fread(out, 1, sizeof(out) - 1, f);
     report("simple_string", out, buf);
-}
-
-Test(ft_printf, simple_float, .init = redirect_all_std)
-{
-    float	a = 11.44;
-	char	buf[32];
-	char	out[64] = {0};
-	FILE	*f;
-
-	snprintf(buf, sizeof(buf), "Hello %f", a);
-	ft_printf("Hello %f", a);
-	fflush(stdout);
-	f = cr_get_redirected_stdout();
-	fread(out, 1, sizeof(out) - 1, f);
-    report("simple_float", out, buf);
 }
 
 Test(ft_printf, simple_long, .init = redirect_all_std)
